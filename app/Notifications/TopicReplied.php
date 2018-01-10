@@ -8,8 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\Reply;
 
-class TopicReplied extends Notification
+class TopicReplied extends Notification implements ShouldQueue
 {
+    //我们可以通过对通知类添加 ShouldQueue 接口和 Queueable trait 把通知加入队列。
+    //它们两个在使用 make:notification 命令来生成通知文件时就已经被导入，我们只需添加到通知类接口即可。
     use Queueable;
 
     public $reply;
@@ -23,7 +25,7 @@ class TopicReplied extends Notification
     public function via($notifiable)
     {
         // 开启通知的频道
-        return ['database'];
+        return ['database','mail'];
     }
 
     public function toDatabase($notifiable)
@@ -42,5 +44,14 @@ class TopicReplied extends Notification
             'topic_id' => $topic->id,
             'topic_title' => $topic->title,
         ];
+    }
+
+    public function toMail($notifiable)
+    {
+        $url = $this->reply->topic->link(['#reply' . $this->reply->id]);
+
+        return (new MailMessage)
+            ->line('你的话题有新回复！')
+            ->action('查看回复', $url);
     }
 }
