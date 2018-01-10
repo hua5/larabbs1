@@ -8961,6 +8961,10 @@ body {
   line-height: 38px;
 }
 
+.topic-reply {
+  /* Notifications badge */
+}
+
 .topic-reply hr {
   margin-top: 16px;
   margin-bottom: 16px;
@@ -8973,5 +8977,17 @@ body {
 .topic-reply .meta {
   font-size: .9em;
   color: #b3b3b3;
+}
+
+.topic-reply .notifications-badge {
+  margin-top: -1;
+}
+
+.topic-reply .notifications-badge .badge-fade {
+  background-color: #EBE8E8;
+}
+
+.topic-reply .notifications-badge .badge-hint {
+  background-color: #d15b47 !important;
 }
 
