@@ -11,7 +11,8 @@
 |
 */
 //主页
-Route::get('/', 'PagesController@root')->name('root');
+//Route::get('/', 'PagesController@root')->name('root');
+Route::get('/', 'TopicsController@index')->name('root');
 
 //系统自动生成
 //Auth::routes();
