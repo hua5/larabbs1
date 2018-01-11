@@ -9,6 +9,7 @@ use App\Http\Requests\TopicRequest;
 use App\Models\Category;
 use Auth;
 use App\Handlers\ImageUploadHandler;
+use App\Models\User;
 
 
 
@@ -19,12 +20,12 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-	public function index(Request $request, Topic $topic)
+
+	public function index(Request $request, Topic $topic, User $user)
 	{
-	//	$topics = Topic::paginate(); 优化后 直接关联 用户 和分类  实行预加载
-	//	$topics = Topic::with('user', 'category')->paginate(30);
 		$topics = $topic->withOrder($request->order)->paginate(20);
-		return view('topics.index', compact('topics'));
+		$active_users = $user->getActiveUsers();
+		return view('topics.index', compact('topics', 'active_users'));
 	}
 
 	public function show(Request $request, Topic $topic)
